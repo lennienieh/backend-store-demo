@@ -17,39 +17,30 @@ module.exports = {
   ** Customize the progress-bar color
   */
   loading: { color: '#3B8070' },
+  css: [
+    // '~assets/css/main.css',
+    'element-ui/lib/theme-default/index.css'
+  ],
+  generate: {
+    minify: {
+      removeRedundantAttributes: false
+    }
+  },
   /*
   ** Build configuration
   */
   build: {
+    // analyze: true,
     vendor: ['axios', 'element-ui'],
-    loaders: [
-      {
-        test: /\.scss$/,
-        loaders: ['style','css','sass']
-      },
-      {
-        test: /\.(png|jpe?g|gif|svg)$/,
-        loader: 'url-loader',
-        query: {
-          limit: 1000, // 1KO
-          name: 'img/[name].[hash:7].[ext]'
-        }
-      },
-      {
-        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
-        query: {
-          limit: 1000, // 1 KO
-          name: 'fonts/[name].[hash:7].[ext]'
-        }
-      }
-    ],
-    postcss: [
-      require('autoprefixer')({
-        browsers: ['last 3 versions']
-      })
-    ],
-
+    // vue: {
+    //   preserveWhitespace: false
+    // },
+    babel: {
+      plugins: [['component', [{
+        libraryName: 'element-ui',
+        styleLibraryName: 'theme-default'
+      }]]]
+    },
     /*
     ** Run ESLINT on save
     */
@@ -61,6 +52,10 @@ module.exports = {
           loader: 'eslint-loader',
           exclude: /(node_modules)/
         })
+        config.module.rules.push({
+        test: /\.scss$/,
+        loader: 'vue-style-loader!css-loader!sass-loader'
+      })
       }
     }
   },
